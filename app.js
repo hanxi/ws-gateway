@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var port = (process.env.PORT || 9001);
+var wsport = (process.env.PORT || 9001);
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: wsport});
 var handler = require('./handler');
