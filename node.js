@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var wsport = process.env.OPENSHIFT_NODEJS_PORT;
+var port = (process.env.VMC_APP_PORT || 9001);
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: wsport});
 var handler = require('./handler');
