@@ -9,8 +9,8 @@ var CONN_TYPE_CLIENT = 2;
 var serverId2Conn = {};
 var clientId2Conn = {};
 
-var SERVER_ID = process.env.SERVER_ID;
-var SERVER_PASS = process.env.SERVER_PASS;
+var SERVER_ID = process.env.SERVER_ID || '15303030404';
+var SERVER_PASS = process.env.SERVER_PASS || '123456';
 
 conn.addConn = function (ws, id, type) {
     var co = {
@@ -90,6 +90,18 @@ var onAuthClient = function (ws, prot) {
     }
 }
 handler.registerHandler("authClient", onAuthClient);
+
+var getOnlineClient = function (ws, prot) {
+    var phoneList = [];
+    for (phone in clientId2Conn) {
+        phoneList.push(phone);
+    }
+    var prot = {
+        phoneList: phoneList
+    }
+    handler.sendProt(ws, "getOnlineClient", prot);
+}
+handler.registerHandler("getOnlineClient", getOnlineClient);
 
 conn.getClient = function (id) {
     return clientId2Conn[id];
