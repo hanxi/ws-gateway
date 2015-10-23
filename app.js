@@ -17,7 +17,8 @@ wss.on('connection', function connection(ws) {
             } else if (conn.isAuthorClient(ws)) {
                 var co = conn.getServer();
                 if (co) { // transport to server
-                    co.ws.send(message);
+                    prot.clientId = ws.co.id;
+                    co.ws.send(JSON.stringify(prot));
                 } else {
                     errormsg.send(ws, "serveroffline");
                     ws.close();
