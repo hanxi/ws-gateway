@@ -9,7 +9,7 @@ var CONN_TYPE_CLIENT = 2;
 var serverId2Conn = {};
 var clientId2Conn = {};
 
-var SERVER_ID = process.env.SERVER_ID || '15303030404';
+var SERVER_ID = process.env.SERVER_ID || '15374043072';
 var SERVER_PASS = process.env.SERVER_PASS || '123456';
 
 conn.addConn = function (ws, id, type) {
