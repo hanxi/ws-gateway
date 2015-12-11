@@ -59,6 +59,7 @@ var onAuth = function (ws, prot) {
     } else if (type==CONN_TYPE_CLIENT) {
         var co = conn.getServer();
         if (co) { // transport to server
+            //console.log(co);
             conn.addConn(ws, id, type);
             clientId2Conn[id] = ws.co;
             handler.sendProt(co.ws, "authClient", prot);
