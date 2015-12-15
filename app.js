@@ -15,13 +15,16 @@ wss.on('connection', function connection(ws) {
             if (func) {
                 func(ws, prot);
             } else if (conn.isAuthorClient(ws)) {
-                var co = conn.getServer();
-                if (co) { // transport to server
-                    prot.clientId = ws.co.id;
-                    co.ws.send(JSON.stringify(prot));
-                } else {
-                    errormsg.send(ws, "serveroffline");
-                    ws.close();
+                var serverId2Conn = conn.getServerList(prot.serverId);
+                for (serverId in serverId2Conn) {
+                    var co = serverId2Conn[serverId];
+                    if (co) { // transport to server
+                        prot.clientId = ws.co.id;
+                        co.ws.send(JSON.stringify(prot));
+                    } else {
+                        errormsg.send(ws, "serveroffline");
+                        //ws.close();
+                    }
                 }
             } else if (conn.isAuthorServer(ws)) {
                 var co = conn.getClient(prot.clientId);
@@ -38,6 +41,11 @@ wss.on('connection', function connection(ws) {
             console.log(e);
         }
     });
+    ws.on('close', function close() {
+        console.log('disconnected');
+        conn.delConn(ws);
+    });
+             
 });
 console.log("websocket listen port : " + wsport);
 

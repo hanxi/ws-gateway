@@ -7,6 +7,8 @@ errormsg.autherror = "账号或者密码错误";
 
 errormsg.notauthor = "账号未登陆";
 
+errormsg.error = "未知错误";
+
 errormsg.send = function (ws, error) {
     var msg = errormsg[error];
     var prot = {msg:msg,error:error};
