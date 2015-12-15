@@ -51,7 +51,9 @@ var broadCastClientState =  function (clientId, state) {
     prot.state = state;
     for (serverId in serverId2Conn) {
         var co = serverId2Conn[serverId];
-        handler.sendProt(co.ws, "setClientState", prot);
+        if (co) {
+            handler.sendProt(co.ws, "setClientState", prot);
+        }
     }
 }
 
@@ -82,7 +84,7 @@ var onAuth = function (ws, prot) {
     if (type==CONN_TYPE_SERVER) {
         if (serverId2Pass.hasOwnProperty(id) && serverId2Pass[id]==pass) { // TODO: use crypto
             conn.addConn(ws,id,type);
-            var prot = {msg:"auth OK."}
+            var prot = {msg:"AUTH OK"}
             handler.sendProt(ws, "authServer",  prot);
         } else {
             errormsg.send(ws, "autherror");
@@ -92,7 +94,7 @@ var onAuth = function (ws, prot) {
         var co = conn.getServerList()[0];
         if (clientId2Info.hasOwnProperty(id) && clientId2Info[id].pass==pass) { // TODO: use crypto
             conn.addConn(ws, id, type);
-            var prot = {msg:"auth OK."}
+            var prot = {msg:"AUTH OK"}
             handler.sendProt(ws, "auth", prot);
         } else {
             errormsg.send(ws, "autherror");
@@ -141,6 +143,7 @@ var getClientInfos = function (ws, prot) {
     }
     sendClientInfos(ws);
 }
+handler.registerHandler("getClientInfos", getClientInfos);
 
 var sendClientInfos = function(ws) {
     var prot = {};
@@ -182,7 +185,8 @@ handler.registerHandler("getServerPasss", getServerPasss);
 
 var setServerPasss = function (ws, prot) {
     if (ws.co && ws.co.type==CONN_TYPE_SERVER && ws.co.id==SERVER_ID) {
-        serverId2Pass = {SERVER_ID:SERVER_PASS};
+        serverId2Pass = {};
+        serverId2Pass[SERVER_ID]=SERVER_PASS;
         for (var phone in prot.serverId2Pass) {
             if (phone!==SERVER_ID) {
                 serverId2Pass[phone] = prot.serverId2Pass[phone];
