@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var wsport = (process.env.PORT || 9001);
+var wsport = (process.env.WSPORT || 9001);
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({ port: wsport});
 var handler = require('./handler');
@@ -48,4 +48,16 @@ wss.on('connection', function connection(ws) {
              
 });
 console.log("websocket listen port : " + wsport);
+
+
+var static = require('node-static');
+var fileServer = new static.Server('./public');
+var httpport = (process.env.HTTPPORT || 8080);
+require('http').createServer(function (request, response) {
+    request.addListener('end', function () {
+        fileServer.serve(request, response);
+    }).resume();
+}).listen(httpport);
+
+console.log("http listen port : " + httpport);
 

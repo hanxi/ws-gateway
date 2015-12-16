@@ -1,10 +1,13 @@
 {
   "name": "MsgGateway",
   "version": "1.0.0",
-  "engines": {"node": "0.12.x"},
+  "engines": {
+    "node": "0.12.x"
+  },
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "node-static": "^0.7.7",
     "ws": "^0.8.0"
   },
   "devDependencies": {},
